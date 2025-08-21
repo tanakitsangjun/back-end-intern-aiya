@@ -1,0 +1,18 @@
+{
+  "name": "back-end-intern-aiya",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir ./dist"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.1",
+    "hono": "^4.9.2",
+    "jose": "^6.0.12",
+    "mysql2": "^3.14.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
