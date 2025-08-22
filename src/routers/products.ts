@@ -35,7 +35,7 @@ router.get('/',  async (c) => {
                 'INSERT INTO inventory (product_id, amount, last_updated) VALUES (?, ?, NOW())',
                 [productId, 0]
             );
-            // await conn.commit();
+            await conn.commit();
           
             return c.json({
                 success: true,
