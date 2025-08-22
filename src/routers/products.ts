@@ -25,23 +25,36 @@ router.get('/',  async (c) => {
   }).post('/',async (c) =>{
     try {
         const body: CreateProductReq = await c.req.json();  
-
-            const [productResult] = await conn.execute(
-                'INSERT INTO products (namep, price, description, category_id, image_url) VALUES (?, ?, ?, ?,?)',
+        
+        // เริ่ม transaction
+        const connection = await conn.getConnection();
+        await connection.beginTransaction();
+        
+        try {
+            const [productResult] = await connection.execute(
+                'INSERT INTO products (namep, price, description, category_id, image_url) VALUES (?, ?, ?, ?, ?)',
                 [body.namep, body.price, body.description, body.category_id, body.image_url]
             );
             const productId = (productResult as any).insertId;
-          let a =   await conn.execute(
+            
+            await connection.execute(
                 'INSERT INTO inventory (product_id, amount, last_updated) VALUES (?, ?, NOW())',
                 [productId, body.amount]
             );
-            await conn.commit();
-          
+            
+            await connection.commit();
+            
             return c.json({
                 success: true,
                 message: 'เพิ่มสินค้าสำเร็จ',
                 product_id: productId
             }, 201);
+        } catch (err) {
+            await connection.rollback();
+            throw err;
+        } finally {
+            connection.release();
+        }
     } catch (error) {
         return c.json({
             success: false,
