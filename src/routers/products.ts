@@ -33,7 +33,7 @@ router.get('/',  async (c) => {
             const productId = (productResult as any).insertId;
           let a =   await conn.execute(
                 'INSERT INTO inventory (product_id, amount, last_updated) VALUES (?, ?, NOW())',
-                [productId, 0]
+                [productId, body.amount || 0]
             );
             await conn.commit();
           
