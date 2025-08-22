@@ -36,7 +36,7 @@ router.post('/login', async (c) => {
     success: true,
     token,
     tokenType: 'Bearer',
-    expiresIn: 15 * 60, // วินาที
+    expiresIn: 2 * 60 * 60, // วินาที
     user: { id: user.id, email: user.email }, 
   })
 
